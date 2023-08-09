@@ -1,11 +1,14 @@
-package Main;
+package main;
 
 public class Game {
 
-    private GamePanel gamePanel;
     private GameWindow gameWindow;
+    private GamePanel gamePanel;
+
     public Game() {
         gamePanel = new GamePanel();
         gameWindow = new GameWindow(gamePanel);
+        gamePanel.setFocusable(true);
+        gamePanel.requestFocus();
     }
 }
