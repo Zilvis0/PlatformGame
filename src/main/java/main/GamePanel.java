@@ -70,7 +70,7 @@ public class GamePanel extends JPanel {
         moving = true;
     }
 
-    public void setMoving (boolean moving){
+    public void setMoving(boolean moving) {
         this.moving = moving;
     }
 
@@ -86,7 +86,7 @@ public class GamePanel extends JPanel {
     }
 
     private void setAnimation() {
-        if(moving){
+        if (moving) {
             playerAction = RUNNING;
         } else {
             playerAction = IDLE;
@@ -94,35 +94,34 @@ public class GamePanel extends JPanel {
     }
 
     private void updatePos() {
-        if(moving){
-            switch (playerDir){
+        if (moving) {
+            switch (playerDir) {
                 case LEFT:
-                    xDelta-=5;
+                    xDelta -= 5;
                     break;
                 case UP:
-                    yDelta-=5;
+                    yDelta -= 5;
                     break;
                 case RIGHT:
-                    xDelta+=5;
+                    xDelta += 5;
                     break;
                 case DOWN:
-                    yDelta+=5;
+                    yDelta += 5;
                     break;
             }
         }
     }
 
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    public void updateGame() {
         updateAnimationTick();
-
         setAnimation();
         updatePos();
-
-        g.drawImage(animations[playerAction][aniIndex], (int) xDelta, (int) yDelta, 256, 160, null);
     }
 
-
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(animations[playerAction][aniIndex], (int) xDelta, (int) yDelta, 256, 160, null);
+    }
 
 
 }
