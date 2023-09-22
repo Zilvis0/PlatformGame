@@ -11,20 +11,30 @@ import java.awt.image.BufferedImage;
 
 import static utils.Constants.UI.PauseButtons.*;
 import static utils.Constants.UI.URMButtons.*;
+import static utils.Constants.UI.VolumeButtons.*;
+
 
 public class PauseOverlay {
 
+    private Playing playing;
     private BufferedImage backgroundImg;
     private int bgX, bgY, bgW, bgH;
     private SoundButton musicButton, sfxButton;
     private UrmButton menuB, replayB, unpauseB;
-    private Playing playing;
+    private VolumeButton volumeButton;
 
     public PauseOverlay(Playing playing) {
         this.playing = playing;
         loadBackground();
         createSoundButtons();
         createUrmButtons();
+        createVolumeButton();
+    }
+
+    private void createVolumeButton() {
+        int vX = (int)(309 * Game.SCALE);
+        int vY = (int)(278 * Game.SCALE);
+        volumeButton = new VolumeButton(vX, vY, SLIDER_WIDTH, VOLUME_HEIGHT);
     }
 
     private void createUrmButtons() {
@@ -62,6 +72,8 @@ public class PauseOverlay {
         menuB.update();
         replayB.update();
         unpauseB.update();
+
+        volumeButton.update();
     }
 
     public void draw(Graphics g) {
@@ -78,6 +90,10 @@ public class PauseOverlay {
         menuB.draw(g);
         replayB.draw(g);
         unpauseB.draw(g);
+
+        //Volume slider
+
+        volumeButton.draw(g);
 
     }
 
