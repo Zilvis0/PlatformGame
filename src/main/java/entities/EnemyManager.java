@@ -25,9 +25,9 @@ public class EnemyManager {
         crabbies = LoadSave.getCrabs();
     }
 
-    public void update(){
+    public void update(int[][] lvlData){
         for(Crabby c : crabbies){
-            c.update();
+            c.update(lvlData);
         }
 
     }
@@ -38,7 +38,7 @@ public class EnemyManager {
 
     private void drawCrabs(Graphics g, int xLevelOffset) {
         for(Crabby c : crabbies){
-            g.drawImage(crabbyArr[c.getEnemyState()][c.getAniIndex()], (int)c.getHitbox().x - xLevelOffset, (int) c.getHitbox().y, CRABBY_WIDTH, CRABBY_HEIGHT, null);
+            g.drawImage(crabbyArr[c.getEnemyState()][c.getAniIndex()], (int)c.getHitbox().x - CRABBY_DRAW_OFFSET_X - xLevelOffset, (int) c.getHitbox().y - CRABBY_DRAW_OFFSET_Y, CRABBY_WIDTH, CRABBY_HEIGHT, null);
         }
     }
 
