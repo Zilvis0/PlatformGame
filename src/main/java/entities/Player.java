@@ -4,6 +4,7 @@ import main.Game;
 import utils.LoadSave;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 import static utils.Constants.PlayerConstants.*;
@@ -46,18 +47,38 @@ public class Player extends Entity {
     private int currentHealth = 40;
     private int healthWidth = healthBarWidth;
 
+    //AttackBox
+
+    private Rectangle2D.Float attackBox;
+
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
         loadAnimations();
         initHitbox(x, y, (int) (20 * Game.SCALE), (int) (27 * Game.SCALE));
+        initAttackBox();
+    }
+
+    private void initAttackBox() {
+        attackBox = new Rectangle2D.Float(x,y, (int)(20 * Game.SCALE), (int)(20 * Game.SCALE));
     }
 
     public void update() {
+        updateHealthBar();
+        updateAttackBox();
+
         updatePos();
         updateAnimationTick();
         setAnimation();
-        updateHealthBar();
+    }
+
+    private void updateAttackBox() {
+        if(right){
+            attackBox.x = hitbox.x + hitbox.width + (int)(Game.SCALE * 10);
+        } else if (left){
+            attackBox.x = hitbox.x - hitbox.width - (int)(Game.SCALE * 10);
+        }
+        attackBox.y = hitbox.y + (int)(Game.SCALE * 10);
     }
 
     private void updateHealthBar() {
@@ -67,8 +88,13 @@ public class Player extends Entity {
     public void render(Graphics g, int lvlOffset) {
         g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset) - lvlOffset, (int) (hitbox.y - yDrawOffset), width, height, null);
 //        drawHitbox(g);
-        
+        drawAttackBox(g, lvlOffset);
         drawUI(g);
+    }
+
+    private void drawAttackBox(Graphics g, int lvlOffsetX) {
+        g.setColor(Color.RED);
+        g.drawRect((int)attackBox.x - lvlOffsetX, (int)attackBox.y, (int)attackBox.width, (int)attackBox.height);
     }
 
     private void drawUI(Graphics g) {
