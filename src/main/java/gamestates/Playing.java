@@ -113,6 +113,10 @@ public class Playing extends State implements Statemethods {
         }
     }
 
+    public void resetAll(){
+        //TODO: reset playing, enemy, lvl, etc;
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
