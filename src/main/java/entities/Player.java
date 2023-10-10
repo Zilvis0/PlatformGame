@@ -1,5 +1,6 @@
 package entities;
 
+import gamestates.Playing;
 import main.Game;
 import utils.LoadSave;
 
@@ -44,7 +45,7 @@ public class Player extends Entity {
     private int healthBarYStart = (int) (14 * Game.SCALE);
 
     private int maxHealth = 100;
-    private int currentHealth = 40;
+    private int currentHealth = maxHealth;
     private int healthWidth = healthBarWidth;
 
     //AttackBox
@@ -54,9 +55,13 @@ public class Player extends Entity {
     private int flipX = 0;
     private int flipW = 1;
 
+    private boolean attackChecked = false;
+    private  Playing playing;
 
-    public Player(float x, float y, int width, int height) {
+
+    public Player(float x, float y, int width, int height, Playing playing) {
         super(x, y, width, height);
+        this.playing = playing;
         loadAnimations();
         initHitbox(x, y, (int) (20 * Game.SCALE), (int) (27 * Game.SCALE));
         initAttackBox();
@@ -68,11 +73,27 @@ public class Player extends Entity {
 
     public void update() {
         updateHealthBar();
+        if(currentHealth <= 0){
+            playing.setGameOver(true);
+            return;
+        }
         updateAttackBox();
 
         updatePos();
+        if(attacking){
+            checkAttack();
+        }
         updateAnimationTick();
         setAnimation();
+    }
+
+    private void checkAttack() {
+        if(attackChecked || aniIndex == 1){
+            return;
+        }
+        attackChecked = true;
+        playing.checkEnemyHit(attackBox);
+
     }
 
     private void updateAttackBox() {
@@ -93,7 +114,7 @@ public class Player extends Entity {
                 (int) (hitbox.x - xDrawOffset) - lvlOffset + flipX,
                 (int) (hitbox.y - yDrawOffset),
                 width * flipW, height, null);
-        drawAttackBox(g, lvlOffset);
+//        drawAttackBox(g, lvlOffset);
         drawUI(g);
     }
 
@@ -117,6 +138,7 @@ public class Player extends Entity {
             if (aniIndex >= GetSpriteAmount(playerAction)) {
                 aniIndex = 0;
                 attacking = false;
+                attackChecked = false;
             }
         }
     }
@@ -141,6 +163,11 @@ public class Player extends Entity {
 
         if (attacking) {
             playerAction = ATTACK;
+            if(startAni != ATTACK){
+                aniIndex = 1;
+                aniTick = 0;
+                return;
+            }
         }
 
         if (startAni != playerAction) {
@@ -314,5 +341,21 @@ public class Player extends Entity {
 
     public void setJump(boolean jump) {
         this.jump = jump;
+    }
+
+    public void resetAll() {
+        resetDirBooleans();
+        inAir = false;
+        attacking = false;
+        moving = false;
+        playerAction = IDLE;
+        currentHealth = maxHealth;
+
+        hitbox.x = x;
+        hitbox.y = y;
+
+        if (!isEntityOnFloor(hitbox, lvlData)) {
+            inAir = true;
+        }
     }
 }
