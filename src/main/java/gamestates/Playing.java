@@ -5,6 +5,7 @@ import entities.Player;
 import levels.LevelManager;
 import main.Game;
 import ui.GameOverOverlay;
+import ui.LevelCompletedOverlay;
 import ui.PauseOverlay;
 import utils.LoadSave;
 
@@ -24,7 +25,9 @@ public class Playing extends State implements Statemethods {
     private EnemyManager enemyManager;
     private PauseOverlay pauseOverlay;
     private GameOverOverlay gameOverOverlay;
+    private LevelCompletedOverlay levelCompletedOverlay;
     private boolean paused = false;
+
 
     private int xLvlOffset;
     private int leftBorder = (int) (0.2 * Game.GAME_WIDTH);
@@ -38,6 +41,7 @@ public class Playing extends State implements Statemethods {
     private Random rnd = new Random();
 
     private boolean gameOver;
+    private boolean levelCompleted = true;
 
     public Playing(Game game) {
         super(game);
@@ -61,17 +65,20 @@ public class Playing extends State implements Statemethods {
         player.loadLvlData(levelManager.getCurrentLevel().getLvlData());
         pauseOverlay = new PauseOverlay(this);
         gameOverOverlay = new GameOverOverlay(this);
+        levelCompletedOverlay = new LevelCompletedOverlay(this);
     }
 
     @Override
     public void update() {
-        if (!paused && !gameOver) {
+        if (paused) {
+            pauseOverlay.update();
+        } else if (levelCompleted) {
+            levelCompletedOverlay.update();
+        } else if (!gameOver) {
             levelManager.update();
             player.update();
             enemyManager.update(levelManager.getCurrentLevel().getLvlData(), player);
             checkCloseToBorder();
-        } else {
-            pauseOverlay.update();
         }
     }
 
@@ -109,6 +116,8 @@ public class Playing extends State implements Statemethods {
             pauseOverlay.draw(g);
         } else if (gameOver) {
             gameOverOverlay.draw(g);
+        } else if (levelCompleted) {
+            levelCompletedOverlay.draw(g);
         }
     }
 
@@ -160,6 +169,8 @@ public class Playing extends State implements Statemethods {
         if (!gameOver) {
             if (paused) {
                 pauseOverlay.mousePressed(e);
+            } else if (levelCompleted) {
+                levelCompletedOverlay.mousePressed(e);
             }
         }
     }
@@ -169,6 +180,8 @@ public class Playing extends State implements Statemethods {
         if (!gameOver) {
             if (paused) {
                 pauseOverlay.mouseReleased(e);
+            } else if (levelCompleted) {
+                levelCompletedOverlay.mouseReleased(e);
             }
         }
     }
@@ -178,6 +191,8 @@ public class Playing extends State implements Statemethods {
         if (!gameOver) {
             if (paused) {
                 pauseOverlay.mouseMoved(e);
+            } else if (levelCompleted) {
+                levelCompletedOverlay.mouseMoved(e);
             }
         }
     }
