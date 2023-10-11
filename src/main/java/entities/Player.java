@@ -56,7 +56,7 @@ public class Player extends Entity {
     private int flipW = 1;
 
     private boolean attackChecked = false;
-    private  Playing playing;
+    private Playing playing;
 
 
     public Player(float x, float y, int width, int height, Playing playing) {
@@ -67,20 +67,27 @@ public class Player extends Entity {
         initAttackBox();
     }
 
+    public void setSpawnPoint(Point spawn) {
+        this.x = spawn.x;
+        this.y = spawn.y;
+        hitbox.x = x;
+        hitbox.y = y;
+    }
+
     private void initAttackBox() {
         attackBox = new Rectangle2D.Float(x, y, (int) (20 * Game.SCALE), (int) (20 * Game.SCALE));
     }
 
     public void update() {
         updateHealthBar();
-        if(currentHealth <= 0){
+        if (currentHealth <= 0) {
             playing.setGameOver(true);
             return;
         }
         updateAttackBox();
 
         updatePos();
-        if(attacking){
+        if (attacking) {
             checkAttack();
         }
         updateAnimationTick();
@@ -88,7 +95,7 @@ public class Player extends Entity {
     }
 
     private void checkAttack() {
-        if(attackChecked || aniIndex == 1){
+        if (attackChecked || aniIndex == 1) {
             return;
         }
         attackChecked = true;
@@ -163,7 +170,7 @@ public class Player extends Entity {
 
         if (attacking) {
             playerAction = ATTACK;
-            if(startAni != ATTACK){
+            if (startAni != ATTACK) {
                 aniIndex = 1;
                 aniTick = 0;
                 return;

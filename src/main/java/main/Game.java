@@ -3,6 +3,7 @@ package main;
 import gamestates.Gamestate;
 import gamestates.Menu;
 import gamestates.Playing;
+import utils.LoadSave;
 
 import java.awt.*;
 
@@ -28,7 +29,6 @@ public class Game implements Runnable {
 
 
     public Game() {
-
         initClasses();
 
         gamePanel = new GamePanel(this);

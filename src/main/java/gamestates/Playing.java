@@ -32,16 +32,14 @@ public class Playing extends State implements Statemethods {
     private int xLvlOffset;
     private int leftBorder = (int) (0.2 * Game.GAME_WIDTH);
     private int rightBorder = (int) (0.8 * Game.GAME_WIDTH);
-    private int lvlTilesWide = LoadSave.GetLevelData()[0].length;
-    private int maxTilesOffset = lvlTilesWide - Game.TILES_IN_WIDTH;
-    private int maxLvlOffsetX = maxTilesOffset * Game.TILES_SIZE;
+    private int maxLvlOffsetX;
 
     private BufferedImage backgroundImg, bigCloud, smallCloud;
     private int[] smallCloudsPos;
     private Random rnd = new Random();
 
     private boolean gameOver;
-    private boolean levelCompleted = true;
+    private boolean levelCompleted;
 
     public Playing(Game game) {
         super(game);
@@ -54,6 +52,23 @@ public class Playing extends State implements Statemethods {
         for (int i = 0; i < smallCloudsPos.length; i++) {
             smallCloudsPos[i] = (int) (90 * Game.SCALE) + rnd.nextInt((int) (100 * Game.SCALE));
         }
+
+        calcLvlOffset();
+        loadStartLevel();
+    }
+
+    public void loadNextLevel(){
+        resetAll();
+        levelManager.loadNextLevel();
+        player.setSpawnPoint(levelManager.getCurrentLevel().getPlayerSpawn());
+    }
+
+    private void loadStartLevel() {
+        enemyManager.loadEnemies(levelManager.getCurrentLevel());
+    }
+
+    private void calcLvlOffset() {
+        maxLvlOffsetX = levelManager.getCurrentLevel().getMaxLvlOffsetX();
     }
 
 
@@ -61,8 +76,10 @@ public class Playing extends State implements Statemethods {
 
         levelManager = new LevelManager(game);
         enemyManager = new EnemyManager(this);
+
         player = new Player(200, 200, (int) (64 * Game.SCALE), (int) (40 * Game.SCALE), this);
         player.loadLvlData(levelManager.getCurrentLevel().getLvlData());
+        player.setSpawnPoint(levelManager.getCurrentLevel().getPlayerSpawn());
         pauseOverlay = new PauseOverlay(this);
         gameOverOverlay = new GameOverOverlay(this);
         levelCompletedOverlay = new LevelCompletedOverlay(this);
@@ -131,9 +148,9 @@ public class Playing extends State implements Statemethods {
     }
 
     public void resetAll() {
-        //TODO: reset playing, enemy, lvl, etc;
         gameOver = false;
         paused = false;
+        levelCompleted = false;
         player.resetAll();
         enemyManager.resetAllEnemies();
     }
@@ -249,5 +266,17 @@ public class Playing extends State implements Statemethods {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public EnemyManager getEnemyManager() {
+        return enemyManager;
+    }
+
+    public void setMaxLvlOffsetX(int maxLvlOffsetX) {
+        this.maxLvlOffsetX = maxLvlOffsetX;
+    }
+
+    public void setLevelCompleted(boolean levelCompleted){
+        this.levelCompleted = levelCompleted;
     }
 }
