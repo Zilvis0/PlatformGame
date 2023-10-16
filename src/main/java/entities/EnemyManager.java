@@ -9,7 +9,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import static utils.Constants.enemyConstants.*;
+import static utils.Constants.EnemyConstants.*;
 
 public class EnemyManager {
 

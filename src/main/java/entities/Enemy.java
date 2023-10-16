@@ -6,7 +6,7 @@ import java.awt.geom.Rectangle2D;
 
 import static utils.Constants.Directions.*;
 import static utils.Constants.*;
-import static utils.Constants.enemyConstants.*;
+import static utils.Constants.EnemyConstants.*;
 import static utils.HelpMethods.*;
 
 public abstract class Enemy extends Entity {

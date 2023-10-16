@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 import static utils.Constants.Directions.*;
-import static utils.Constants.enemyConstants.*;
+import static utils.Constants.EnemyConstants.*;
 
 public class Crabby extends Enemy {
 
