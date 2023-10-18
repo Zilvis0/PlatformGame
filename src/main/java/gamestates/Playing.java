@@ -175,6 +175,10 @@ public class Playing extends State implements Statemethods {
         objectManager.checkObjectHit(attackBox);
     }
 
+    public void checkSpikesTouched(Player p) {
+        objectManager.checkSpikesTouched(p);
+    }
+
     public void setGameOver(Boolean gameOver) {
         this.gameOver = gameOver;
     }
@@ -292,6 +296,10 @@ public class Playing extends State implements Statemethods {
         return objectManager;
     }
 
+    public LevelManager getLevelManager() {
+        return levelManager;
+    }
+
     public void setMaxLvlOffsetX(int maxLvlOffsetX) {
         this.maxLvlOffsetX = maxLvlOffsetX;
     }
@@ -299,4 +307,5 @@ public class Playing extends State implements Statemethods {
     public void setLevelCompleted(boolean levelCompleted) {
         this.levelCompleted = levelCompleted;
     }
+
 }
