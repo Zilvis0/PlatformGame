@@ -2,6 +2,7 @@ package levels;
 
 import entities.Crabby;
 import main.Game;
+import objects.Cannon;
 import objects.GameContainer;
 import objects.Potion;
 import objects.Spike;
@@ -16,11 +17,12 @@ import static utils.HelpMethods.*;
 public class Level {
 
     private BufferedImage img;
-    private int [][] lvlData;
+    private int[][] lvlData;
     private ArrayList<Crabby> crabs;
     private ArrayList<Potion> potions;
     private ArrayList<GameContainer> containers;
     private ArrayList<Spike> spikes;
+    private ArrayList<Cannon> cannons;
     private int lvlTilesWide;
     private int maxTilesOffset;
     private int maxLvlOffsetX;
@@ -34,8 +36,13 @@ public class Level {
         createPotions();
         createContainers();
         createSpikes();
+        createCannons();
         calculateLvlOffset();
         calcPlayerSpawn();
+    }
+
+    private void createCannons() {
+        cannons = HelpMethods.GetCannons(img);
     }
 
     private void createSpikes() {
@@ -68,11 +75,11 @@ public class Level {
         lvlData = GetLevelData(img);
     }
 
-    public int getSpriteIndex(int x, int y){
+    public int getSpriteIndex(int x, int y) {
         return lvlData[y][x];
     }
 
-    public int[][] getLvlData(){
+    public int[][] getLvlData() {
         return lvlData;
     }
 
@@ -98,5 +105,9 @@ public class Level {
 
     public ArrayList<Spike> getSpikes() {
         return spikes;
+    }
+
+    public ArrayList<Cannon> getCannons() {
+        return cannons;
     }
 }
