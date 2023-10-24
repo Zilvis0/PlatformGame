@@ -42,6 +42,7 @@ public class Playing extends State implements Statemethods {
 
     private boolean gameOver;
     private boolean levelCompleted;
+    private boolean playerDying;
 
     public Playing(Game game) {
         super(game);
@@ -95,7 +96,11 @@ public class Playing extends State implements Statemethods {
             pauseOverlay.update();
         } else if (levelCompleted) {
             levelCompletedOverlay.update();
-        } else if (!gameOver) {
+        } else if (gameOver) {
+            gameOverOverlay.update();
+        } else if (playerDying) {
+            player.update();
+        } else {
             levelManager.update();
             objectManager.update(levelManager.getCurrentLevel().getLvlData(), player);
             player.update();
@@ -157,6 +162,7 @@ public class Playing extends State implements Statemethods {
         gameOver = false;
         paused = false;
         levelCompleted = false;
+        playerDying = false;
         player.resetAll();
         enemyManager.resetAllEnemies();
         objectManager.resetAllObjects();
@@ -209,6 +215,8 @@ public class Playing extends State implements Statemethods {
             } else if (levelCompleted) {
                 levelCompletedOverlay.mousePressed(e);
             }
+        } else {
+            gameOverOverlay.mousePressed(e);
         }
     }
 
@@ -220,6 +228,8 @@ public class Playing extends State implements Statemethods {
             } else if (levelCompleted) {
                 levelCompletedOverlay.mouseReleased(e);
             }
+        } else {
+            gameOverOverlay.mouseReleased(e);
         }
     }
 
@@ -231,6 +241,8 @@ public class Playing extends State implements Statemethods {
             } else if (levelCompleted) {
                 levelCompletedOverlay.mouseMoved(e);
             }
+        } else {
+            gameOverOverlay.mouseMoved(e);
         }
     }
 
@@ -308,4 +320,7 @@ public class Playing extends State implements Statemethods {
         this.levelCompleted = levelCompleted;
     }
 
+    public void setPlayerDying(boolean playerDying) {
+        this.playerDying = playerDying;
+    }
 }
