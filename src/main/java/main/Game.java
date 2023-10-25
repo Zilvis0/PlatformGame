@@ -1,8 +1,10 @@
 package main;
 
+import gamestates.GameOptions;
 import gamestates.Gamestate;
 import gamestates.Menu;
 import gamestates.Playing;
+import ui.AudioOptions;
 import utils.LoadSave;
 
 import java.awt.*;
@@ -17,6 +19,8 @@ public class Game implements Runnable {
 
     private Playing playing;
     private Menu menu;
+    private GameOptions gameOptions;
+    private AudioOptions audioOptions;
 
 
     public final static int TILES_DEFAULT_SIZE = 32;
@@ -41,8 +45,10 @@ public class Game implements Runnable {
 
     private void initClasses() {
 
+        audioOptions = new AudioOptions();
         menu = new Menu(this);
         playing = new Playing(this);
+        gameOptions = new GameOptions(this);
 
     }
 
@@ -61,6 +67,8 @@ public class Game implements Runnable {
                 playing.update();
                 break;
             case OPTIONS:
+                gameOptions.update();
+                break;
             case QUIT:
             default:
                 System.exit(0);
@@ -77,6 +85,9 @@ public class Game implements Runnable {
                 break;
             case PLAYING:
                 playing.draw(g);
+                break;
+            case OPTIONS:
+                gameOptions.draw(g);
                 break;
             default:
                 break;
@@ -130,18 +141,25 @@ public class Game implements Runnable {
     }
 
     public void windowFocusLost() {
-        if(Gamestate.state == Gamestate.PLAYING){
+        if (Gamestate.state == Gamestate.PLAYING) {
             playing.getPlayer().resetDirBooleans();
         }
 
     }
 
-    public Menu getMenu(){
+    public Menu getMenu() {
         return menu;
     }
 
-    public Playing getPlaying(){
+    public Playing getPlaying() {
         return playing;
     }
 
+    public GameOptions getGameOptions() {
+        return gameOptions;
+    }
+
+    public AudioOptions getAudioOptions() {
+        return audioOptions;
+    }
 }
