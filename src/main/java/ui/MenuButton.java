@@ -80,4 +80,8 @@ public class MenuButton {
     public Rectangle getBounds() {
         return bounds;
     }
+
+    public Gamestate getState() {
+        return state;
+    }
 }
