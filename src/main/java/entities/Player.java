@@ -73,7 +73,7 @@ public class Player extends Entity {
         this.state = IDLE;
         this.maxHealth = 100;
         this.currentHealth = maxHealth;
-        this.walkSpeed = Game.SCALE * 1.0F;
+        this.walkSpeed = Game.SCALE * 1.0f;
         loadAnimations();
         initHitbox(20, 27);
         initAttackBox();
@@ -101,7 +101,7 @@ public class Player extends Entity {
                 aniIndex = 0;
                 playing.setPlayerDying(true);
                 playing.getGame().getAudioPlayer().playEffect(AudioPlayer.DIE);
-            } else if (aniIndex == GetSpriteAmount(DEAD - 1) && aniTick >= ANI_SPEED - 1) {
+            } else if (aniIndex == GetSpriteAmount(DEAD) - 1 && aniTick >= ANI_SPEED - 1) {
                 playing.setGameOver(true);
                 playing.getGame().getAudioPlayer().stopSong();
                 playing.getGame().getAudioPlayer().playEffect(AudioPlayer.GAMEOVER);
@@ -142,7 +142,7 @@ public class Player extends Entity {
     }
 
     private void checkAttack() {
-        if (attackChecked || aniIndex == 1) {
+        if (attackChecked || aniIndex != 1) {
             return;
         }
         attackChecked = true;
