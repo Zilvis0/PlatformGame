@@ -34,7 +34,7 @@ public class EnemyManager {
                 isAnyActive = true;
             }
         }
-        if(!isAnyActive){
+        if (!isAnyActive) {
             playing.setLevelCompleted(true);
         }
 
@@ -58,9 +58,11 @@ public class EnemyManager {
     public void checkEnemyHit(Rectangle2D.Float attackBox) {
         for (Crabby c : crabbies) {
             if (c.isActive()) {
-                if (attackBox.intersects(c.getHitbox())) {
-                    c.hurt(10);
-                    return;
+                if (c.getCurrentHealth() > 0) {
+                    if (attackBox.intersects(c.getHitbox())) {
+                        c.hurt(10);
+                        return;
+                    }
                 }
             }
         }
@@ -79,7 +81,7 @@ public class EnemyManager {
 
 
     public void resetAllEnemies() {
-        for(Crabby c : crabbies){
+        for (Crabby c : crabbies) {
             c.resetEnemy();
         }
     }
